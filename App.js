@@ -6,19 +6,21 @@ import {
     View,
     StyleSheet, TouchableOpacity
 } from 'react-native'
-import { Button, Icon } from 'native-base'
+import { Icon, CheckBox } from 'native-base'
 
 
 export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            index: '',
             newTodoList: '',
+            isEdit: false,
             toDoList: [
-                { 'id': 1, 'task': 'Work' },
-                { 'id': 2, 'task': 'Swim' },
-                { 'id': 3, 'task': 'Study' },
-                { 'id': 4, 'task': 'Sleep' }
+                { 'id': 1, 'task': 'Work', 'isDone': false },
+                { 'id': 2, 'task': 'Swim','isDone': false},
+                { 'id': 3, 'task': 'Study','isDone': false },
+                { 'id': 4, 'task': 'Sleep','isDone': false },
             ]
         }
     }
@@ -30,28 +32,47 @@ export default class App extends Component {
             let id = this.state.toDoList.length + 1
             let list = this.state.toDoList
 
-            const taskBaru = { 'id': id, 'task': this.state.newTodoList }
+            const taskBaru = { 'id': id, 'task': this.state.newTodoList, 'isEdit': false }
             list.unshift(taskBaru)
 
             this.setState({
-                toDoList: list,
+                toDoList: [...list],
                 newTodoList: ''
             })
         }
     }
 
-    delRow(input) {
-        for (let i = 0; i <this.state.toDoList.length;i++){
-           if ( this.state.toDoList[i].id == input) {
-            this.setState( (state)=> {
-                return state.toDoList.splice(i,1)
     
-            })
-           }
+
+    delRow(input) {
+        for (let i = 0; i < this.state.toDoList.length; i++) {
+            if (this.state.toDoList[i].id == input) {
+                this.setState((state) => {
+                    return state.toDoList.splice(i, 1)
+
+                })
+            }
         }
 
-       
+
     }
+
+    
+
+    toDoIsDone(check){
+        const i = this.state.toDoList.findIndex((index)=> index.id == check)
+        if (this.state.toDoList[i].isDone==false){
+        this.setState((state) =>{
+            return state.toDoList[i].isDone = true
+          })
+        }else{
+            this.setState((state) =>{
+                return state.toDoList[i].isDone = false
+        })}
+                
+    }
+
+
 
     render() {
         return (
@@ -63,22 +84,34 @@ export default class App extends Component {
                             value={this.state.newTodoList}
                         />
                     </View>
-                    <TouchableOpacity style={style.boxButtonStyle} onPress={() => this.addTodoList()}
-                    >
-                        <Text> Add </Text>
-                    </TouchableOpacity>
-
+                    {this.state.isEdit ?
+                        <TouchableOpacity style={style.boxButtonStyle} onPress={() => this.editTodoList()}
+                        >
+                            <Text> Edit </Text>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity style={style.boxButtonStyle} onPress={() => this.addTodoList()}
+                        >
+                            <Text> Add </Text>
+                        </TouchableOpacity>
+                    }
                 </View>
                 <View style={style.listPadding}>
                     {this.state.toDoList.map((isi) =>
                         <View style={style.bottomBorder}>
+                            <CheckBox checked= {isi.isDone} style={{marginTop:15}} onPress={ ()=> this.toDoIsDone(isi.id)}
+                            >
+
+                            </CheckBox>
                             <Text key={isi.id}
-                                style={[style.textPadding, style.textStyle,style.textFlex]}
+                                style={[style.textPadding, style.textStyle, style.textFlex]}
                             >
                                 {isi.task}
                             </Text>
+                            
+                            
                             <TouchableOpacity style={style.buttonFlex}
-                            onPress={()=> this.delRow(isi.id)}
+                                onPress={() => this.delRow(isi.id)}
                             >
                                 <Icon style={style.iconStyle} name='trash' />
                             </TouchableOpacity>
@@ -107,22 +140,10 @@ const style = StyleSheet.create({
         marginTop: 40,
     },
     textPadding: {
-        paddingLeft: 10,
+        paddingLeft: 50,
     },
-    list:{
-        flex:1,
-    },
-    listToDo:{
-        flex:8,
-    },
-    listDel:{
-        flex:1,
-    },
-    listUp:{
-        flex:1,
-    },
-    iconStyle:{
-        fontSize: 45,
+    iconStyle: {
+        fontSize: 30,
         color: 'red',
     },
     TextInput: {
@@ -143,10 +164,10 @@ const style = StyleSheet.create({
         fontWeight: '300',
         marginBottom: 10,
     },
-    textFlex:{
-        flex: 8,
+    textFlex: {
+        flex: 7,
     },
-    buttonFlex:{
+    buttonFlex: {
         flex: 1,
     },
     boxButtonStyle: {
@@ -158,7 +179,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
         width: '20%',
     },
-    iconPadding:{
+    iconPadding: {
         justifyContent: 'center',
     },
     bottomBorder: {
