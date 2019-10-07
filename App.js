@@ -24,11 +24,11 @@ export default class App extends Component {
     return (
       <SafeAreaView>
          <View >
-          {this.state.toDoList.map( (isi,i) =>
+          {this.state.toDoList.map( (item,i) =>
           <View key= {i} style = {style.bottomBorder}>
-           <Text key = {isi.id}
+           <Text key = {item.id}
            style = {[style.textPadding,style.textStyle]}>
-           {isi.task}
+           {item.task}
            </Text>
           </View> 
            )}
