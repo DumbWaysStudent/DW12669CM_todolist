@@ -42,7 +42,21 @@ export default class App extends Component {
         }
     }
 
-    
+    editTodoList() {
+        if (this.state.newTodoList == '') {
+            alert('Your input is empty!!!');
+        } else {
+            const i = this.state.index
+            const object = this.state.toDoList
+            object[i].task = this.state.newTodoList
+            this.setState({
+                toDoList : [...object],
+                newTodoList: '',
+                index: '',
+                isEdit: false
+            })
+        }
+    }
 
     delRow(input) {
         for (let i = 0; i < this.state.toDoList.length; i++) {
@@ -57,7 +71,19 @@ export default class App extends Component {
 
     }
 
-    
+    editRow(input) {
+        for (let i = 0; i < this.state.toDoList.length; i++) {
+            if (this.state.toDoList[i].id == input) {
+
+                let edit = this.state.toDoList[i].task
+                this.setState({isEdit: true,newTodoList: edit})
+                this.setState({index:i})
+                
+            }
+        }
+
+
+    }
 
     toDoIsDone(check){
         const i = this.state.toDoList.findIndex((index)=> index.id == check)
@@ -108,7 +134,11 @@ export default class App extends Component {
                             >
                                 {isi.task}
                             </Text>
-                            
+                            <TouchableOpacity style={style.buttonFlex}
+                                onPress={() => this.editRow(isi.id)}
+                            >
+                                <Icon style={style.iconStyle} name='create' />
+                            </TouchableOpacity>
                             
                             <TouchableOpacity style={style.buttonFlex}
                                 onPress={() => this.delRow(isi.id)}
