@@ -6,7 +6,7 @@ import {
     View,
     StyleSheet, TouchableOpacity
 } from 'react-native'
-import { Button, Icon } from 'native-base'
+import { Icon } from 'native-base'
 
 
 export default class App extends Component {
@@ -30,8 +30,8 @@ export default class App extends Component {
             let id = this.state.toDoList.length + 1
             let list = this.state.toDoList
 
-            const taskBaru = { 'id': id, 'task': this.state.newTodoList }
-            list.unshift(taskBaru)
+            const newTask = { 'id': id, 'task': this.state.newTodoList }
+            list.push(newTask)
 
             this.setState({
                 toDoList: list,
@@ -70,15 +70,15 @@ export default class App extends Component {
 
                 </View>
                 <View style={style.listPadding}>
-                    {this.state.toDoList.map((isi) =>
+                    {this.state.toDoList.map((item) =>
                         <View style={style.bottomBorder}>
-                            <Text key={isi.id}
+                            <Text key={item.id}
                                 style={[style.textPadding, style.textStyle,style.textFlex]}
                             >
-                                {isi.task}
+                                {item.task}
                             </Text>
                             <TouchableOpacity style={style.buttonFlex}
-                            onPress={()=> this.delRow(isi.id)}
+                            onPress={()=> this.delRow(item.id)}
                             >
                                 <Icon style={style.iconStyle} name='trash' />
                             </TouchableOpacity>
@@ -108,18 +108,6 @@ const style = StyleSheet.create({
     },
     textPadding: {
         paddingLeft: 10,
-    },
-    list:{
-        flex:1,
-    },
-    listToDo:{
-        flex:8,
-    },
-    listDel:{
-        flex:1,
-    },
-    listUp:{
-        flex:1,
     },
     iconStyle:{
         fontSize: 45,
