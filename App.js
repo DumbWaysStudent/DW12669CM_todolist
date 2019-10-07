@@ -32,8 +32,8 @@ export default class App extends Component {
             let id = this.state.toDoList.length + 1
             let list = this.state.toDoList
 
-            const taskBaru = { 'id': id, 'task': this.state.newTodoList, 'isEdit': false }
-            list.unshift(taskBaru)
+            const newTask = { 'id': id, 'task': this.state.newTodoList, 'isEdit': false }
+            list.push(newTask)
 
             this.setState({
                 toDoList: [...list],
@@ -123,25 +123,25 @@ export default class App extends Component {
                     }
                 </View>
                 <View style={style.listPadding}>
-                    {this.state.toDoList.map((isi) =>
+                    {this.state.toDoList.map((item) =>
                         <View style={style.bottomBorder}>
-                            <CheckBox checked= {isi.isDone} style={{marginTop:15}} onPress={ ()=> this.toDoIsDone(isi.id)}
+                            <CheckBox checked= {item.isDone} style={{marginTop:15}} onPress={ ()=> this.toDoIsDone(item.id)}
                             >
 
                             </CheckBox>
-                            <Text key={isi.id}
+                            <Text key={item.id}
                                 style={[style.textPadding, style.textStyle, style.textFlex]}
                             >
-                                {isi.task}
+                                {item.task}
                             </Text>
                             <TouchableOpacity style={style.buttonFlex}
-                                onPress={() => this.editRow(isi.id)}
+                                onPress={() => this.editRow(item.id)}
                             >
                                 <Icon style={style.iconStyle} name='create' />
                             </TouchableOpacity>
                             
                             <TouchableOpacity style={style.buttonFlex}
-                                onPress={() => this.delRow(isi.id)}
+                                onPress={() => this.delRow(item.id)}
                             >
                                 <Icon style={style.iconStyle} name='trash' />
                             </TouchableOpacity>
