@@ -31,8 +31,8 @@ export default class App extends Component {
         let id = this.state.toDoList.length+1
         let list = this.state.toDoList
 
-        const taskBaru= {'id':id,'task':this.state.newTodoList}
-        list.unshift(taskBaru)
+        const newTask= {'id':id,'task':this.state.newTodoList}
+        list.push(newTask)
 
         this.setState({
           toDoList: list,
@@ -57,12 +57,12 @@ export default class App extends Component {
             </Button>
         </View>
         <View style={style.listPadding}>
-        {this.state.toDoList.map( (isi) =>
+        {this.state.toDoList.map( (item) =>
           <View style = {style.bottomBorder}>
-           <Text key = {isi.id}
+           <Text key = {item.id}
            style = {[style.textPadding,style.textStyle]}
            >
-           {isi.task}
+           {item.task}
            </Text>
           </View> 
            )}
